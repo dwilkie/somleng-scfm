@@ -1,8 +1,8 @@
 # somleng-scfm
 
 [![Build Status](https://travis-ci.org/dwilkie/somleng-scfm-avf.svg?branch=master)](https://travis-ci.org/dwilkie/somleng-scfm-avf)
-[![Test Coverage](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/badges/coverage.svg)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/coverage)
-[![Code Climate](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/badges/gpa.svg)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/919a7e91bfbfa6e34c9c/test_coverage)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/919a7e91bfbfa6e34c9c/maintainability)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/maintainability)
 
 Somleng Simple Call Flow Manager (Somleng SCFM) can be used to enqueue, throttle, update, and process calls through [Somleng](https://github.com/somleng/twilreapi) (or [Twilio](https://www.twilio.com/))
 
