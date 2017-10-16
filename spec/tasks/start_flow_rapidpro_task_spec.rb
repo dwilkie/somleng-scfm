@@ -116,6 +116,12 @@ RSpec.describe StartFlowRapidproTask do
       }
     }
 
+    let(:dynamic_request_params) {
+      {
+        "urns" => ["tel: #{phone_call_to_run_flow.msisdn}"]
+      }
+    }
+
     def env
       {
         "RAPIDPRO_BASE_URL" => rapidpro_base_url,
@@ -153,7 +159,7 @@ RSpec.describe StartFlowRapidproTask do
 
       expect(request_headers["Content-Type"]).to eq("application/json")
       expect(request_headers["Authorization"]).to eq("Token #{rapidpro_api_token}")
-      expect(request_body).to eq(start_flow_rapidpro_request_params)
+      expect(request_body).to eq(start_flow_rapidpro_request_params.merge(dynamic_request_params))
     end
 
     it { assert_run! }

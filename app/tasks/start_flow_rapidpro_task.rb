@@ -51,7 +51,9 @@ class StartFlowRapidproTask < ApplicationTask
   end
 
   def start_flow_rapidpro_request_params(phone_call)
-    {} # Dynamically override default params here
+    {
+      "urns" => ["tel: #{phone_call.msisdn}"]
+    } # Dynamically override default params here
   end
 
   def num_flows_to_start
