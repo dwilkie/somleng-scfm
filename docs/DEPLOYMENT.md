@@ -33,5 +33,5 @@ $ sudo docker run -t --rm -v /etc/somleng-scfm/data:/tmp/data:ro -v /etc/somleng
 Exports cron scripts with sensible defaults to `/etc/somleng-scfm/cron`. Modify the command below to change these defaults or edit them in the exported cron scripts. For additional configuration options see [the install task](https://github.com/dwilkie/somleng-scfm-avf/blob/master/app/tasks/install_task.rb) and the [.env](https://github.com/dwilkie/somleng-scfm-avf/blob/master/.env) file.
 
 ```
-$ sudo docker run --rm -v /etc/somleng-scfm/cron:/usr/src/app/install/cron -e RAILS_ENV=production -e HOST_INSTALL_DIR=/etc/somleng-scfm dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:install:cron'
+$ sudo docker run --rm -v /etc/somleng-scfm/cron:/usr/src/app/install/cron -e RAILS_ENV=production -e HOST_INSTALL_DIR=/etc/somleng-scfm -e DOCKER_IMAGE_NAME="dwilkie/somleng-scfm-avf" dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:install:cron'
 ```

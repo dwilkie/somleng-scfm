@@ -332,6 +332,10 @@ See [Somleng Configuration](#somleng-configuration)
 $ UPDATE_CALLS_TASK_MAX_CALLS_TO_FETCH=1000 bundle exec rake task:update_calls:run
 ```
 
+### Start RapidPro Flow
+
+Handles triggering a RapidPro flow.
+
 #### rake task:start_flow_rapidpro:run
 
 The [start flow rapidpro task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/start_flow_rapidpro_task.rb) triggers a remote flow on [RapidPro](https://community.rapidpro.io/).
