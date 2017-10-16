@@ -55,7 +55,8 @@ RSpec.describe InstallTask do
           :assertions => [
             "RAPIDPRO_BASE_URL",
             "RAPIDPRO_API_VERSION",
-            "RAPIDPRO_API_TOKEN"
+            "RAPIDPRO_API_TOKEN",
+            "START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS=\"{\\\"flow\\\""
           ]
         }
       }
