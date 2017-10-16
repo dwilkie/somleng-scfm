@@ -355,5 +355,5 @@ The [start flow rapidpro task](https://github.com/somleng/somleng-scfm/blob/mast
 ##### Example
 
 ```
-$ RAPIDPRO_BASE_URL="https://app.rapidpro.io/api" RAPIDPRO_API_VERSION="v2" RAPIDPRO_API_TOKEN="rapidpro-api-token" START_FLOW_RAPIDPRO_TASK_MAX_FLOWS_TO_START=1000 START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS="{\"flow\"=>\"flow-id\", \"groups\"=>[], \"contacts\"=>[], \"urns\"=>[\"telegram:telegram-id\"], \"extra\"=>{}}" bundle exec rake task:start_flow_rapidpro:run
+$ RAPIDPRO_BASE_URL="https://app.rapidpro.io/api" RAPIDPRO_API_VERSION="v2" RAPIDPRO_API_TOKEN="rapidpro-api-token" START_FLOW_RAPIDPRO_TASK_MAX_FLOWS_TO_START=1000 START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS=" "{\"flow\":\"flow-id\",\"groups\":[],\"contacts\":[],\"urns\":[\"telegram:telegram-id\"],\"extra\":{}}" bundle exec rake task:start_flow_rapidpro:run
 ```
