@@ -8,12 +8,8 @@ RSpec.describe StartFlowRapidproTask do
   end
 
   describe "#run!" do
-    before do
-      setup_scenario
-    end
-
     def setup_scenario
-      stub_env(env)
+      super
       stub_request(:post, asserted_rapidpro_endpoint).to_return(mocked_remote_response)
       phone_call_to_run_flow
       phone_call_not_completed
