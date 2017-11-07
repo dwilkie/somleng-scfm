@@ -24,6 +24,7 @@ class StartFlowRapidproTask < ApplicationTask
         start_flow!(phone_call)
       rescue ActiveRecord::StaleObjectError
       end
+      sleep(sleep_between_flow_starts.to_f) if sleep_between_flow_starts
     end
   end
 
@@ -58,6 +59,10 @@ class StartFlowRapidproTask < ApplicationTask
 
   def num_flows_to_start
     max_flows_to_start
+  end
+
+  def sleep_between_flow_starts
+    ENV["START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS"]
   end
 
   def max_flows_to_start

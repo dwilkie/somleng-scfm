@@ -344,6 +344,8 @@ The [start flow rapidpro task](https://github.com/somleng/somleng-scfm/blob/mast
 
 `START_FLOW_RAPIDPRO_TASK_MAX_FLOWS_TO_START` configures the maximum number of flows to trigger when running this task (defaults to nil).
 
+`START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS` configures an amount of time to sleep in between triggering RapidPro flows (defaults to nil (no sleep)). For example setting `START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS=0.75` would sleep for `0.75` seconds between triggering flow starts on RapidPro.
+
 `START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS` configures the default request parameters that will be sent to RapidPro for each remote request (defaults to nil). For example, setting `START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS="{\"flow\":\"flow-id\",\"groups\":[],\"contacts\":[],\"urns\":[\"telegram:telegram-id\"],\"extra\":{}}"` would send these parameters to the the start flow remote request on RapidPro. These params are default params only and can be overriden in [the task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/start_flow_rapidpro_task.rb).
 
 `RAPIDPRO_BASE_URL` configures the base url to send RapidPro requests (defaults to `https://app.rapidpro.io/api`)

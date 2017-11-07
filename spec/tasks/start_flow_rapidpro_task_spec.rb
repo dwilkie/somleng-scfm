@@ -8,6 +8,12 @@ RSpec.describe StartFlowRapidproTask do
   end
 
   describe "#run!" do
+    let(:do_run) { true }
+
+    def do_run!
+      subject.run!
+    end
+
     def setup_scenario
       super
       stub_request(:post, asserted_rapidpro_endpoint).to_return(mocked_remote_response)
@@ -15,7 +21,7 @@ RSpec.describe StartFlowRapidproTask do
       phone_call_not_completed
       phone_call_flow_already_run
       phone_call_callout_not_running
-      subject.run!
+      do_run! if do_run
     end
 
     let(:mocked_remote_response) {
@@ -159,5 +165,25 @@ RSpec.describe StartFlowRapidproTask do
     end
 
     it { assert_run! }
+
+    context "SLEEP_BETWEEN_FLOW_STARTS=0.75" do
+      let(:sleep_between_flow_starts) { 0.75 }
+      let(:asserted_sleep) { sleep_between_flow_starts }
+      let(:do_run) { false }
+
+      def env
+        super.merge(
+          "START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS" => sleep_between_flow_starts.to_s
+        )
+      end
+
+      def assert_run!
+        allow(subject).to receive(:sleep)
+        expect(subject).to receive(:sleep).with(asserted_sleep)
+        do_run!
+      end
+
+      it { assert_run! }
+    end
   end
 end
