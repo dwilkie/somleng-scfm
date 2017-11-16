@@ -37,3 +37,4 @@ deploy:
     on:
       repo: dwilkie/somleng-scfm-avf
       branch: master
+      condition: $RAILS_DB_ADAPTER = postgresql
