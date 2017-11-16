@@ -3,10 +3,12 @@ require 'rails_helper'
 RSpec.describe Callout do
   let(:factory) { :callout }
   include_examples "has_metadata"
+  include_examples "has_call_flow_logic"
 
   describe "associations" do
     def assert_associations!
-      is_expected.to have_many(:callout_participations)
+      is_expected.to have_many(:callout_participations).dependent(:restrict_with_error)
+      is_expected.to have_many(:batch_operations).dependent(:restrict_with_error)
       is_expected.to have_many(:contacts)
       is_expected.to have_many(:phone_calls)
     end

@@ -15,11 +15,16 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.2'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-gem 'aasm'
+gem 'aasm', :github => "aasm/aasm"
 gem 'phony_rails'
 gem 'phony'
 gem 'twilio-ruby'
 gem 'httparty'
+gem 'responders'
+gem 'kaminari'
+gem 'api-pagination'
+gem 'wisper', :github => "krisleech/wisper"
+gem 'active_elastic_job', :github => 'tawan/active-elastic-job'
 
 group :development, :test do
   gem 'pry'
@@ -41,4 +46,5 @@ group :test do
   gem 'simplecov', :require => false
   gem 'codeclimate-test-reporter', '~> 1.0.0'
   gem "fakefs", :require => 'fakefs/safe'
+  gem 'wisper-rspec'
 end

@@ -1,9 +1,17 @@
 class Callout < ApplicationRecord
   include MetadataHelpers
+  include HasCallFlowLogic
 
-  has_many :callout_participations
+  has_many :callout_participations, :dependent => :restrict_with_error
+
+  has_many :batch_operations,
+           :class_name => "BatchOperation::Base",
+           :dependent => :restrict_with_error
+
   has_many :phone_calls, :through => :callout_participations
   has_many :contacts, :through => :callout_participations
+
+  alias_attribute :calls, :phone_calls
 
   validates :status, :presence => true
 

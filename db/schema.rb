@@ -10,23 +10,38 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170926070754) do
+ActiveRecord::Schema.define(version: 20171101092942) do
+
+  create_table "batch_operations", force: :cascade do |t|
+    t.integer "callout_id"
+    t.text "parameters", default: "{}", null: false
+    t.text "metadata", default: "{}", null: false
+    t.string "status", null: false
+    t.string "type", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["callout_id"], name: "index_batch_operations_on_callout_id"
+  end
 
   create_table "callout_participations", force: :cascade do |t|
     t.integer "callout_id", null: false
     t.integer "contact_id", null: false
+    t.integer "callout_population_id"
     t.string "msisdn", null: false
+    t.string "call_flow_logic"
     t.text "metadata", default: "{}", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["callout_id", "contact_id"], name: "index_callout_participations_on_callout_id_and_contact_id", unique: true
     t.index ["callout_id", "msisdn"], name: "index_callout_participations_on_callout_id_and_msisdn", unique: true
     t.index ["callout_id"], name: "index_callout_participations_on_callout_id"
+    t.index ["callout_population_id"], name: "index_callout_participations_on_callout_population_id"
     t.index ["contact_id"], name: "index_callout_participations_on_contact_id"
   end
 
   create_table "callouts", force: :cascade do |t|
     t.string "status", null: false
+    t.string "call_flow_logic"
     t.text "metadata", default: "{}", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -41,22 +56,43 @@ ActiveRecord::Schema.define(version: 20170926070754) do
   end
 
   create_table "phone_calls", force: :cascade do |t|
-    t.integer "callout_participation_id", null: false
+    t.integer "callout_participation_id"
     t.integer "contact_id", null: false
+    t.integer "create_batch_operation_id"
+    t.integer "queue_batch_operation_id"
+    t.integer "queue_remote_fetch_batch_operation_id"
     t.string "status", null: false
+    t.string "msisdn", null: false
     t.string "remote_call_id"
     t.string "remote_status"
     t.string "remote_direction"
     t.text "remote_error_message"
-    t.integer "lock_version"
     t.text "metadata", default: "{}", null: false
     t.text "remote_response", default: "{}", null: false
-    t.datetime "queued_at"
+    t.text "remote_request_params", default: "{}", null: false
+    t.text "remote_queue_response", default: "{}", null: false
+    t.string "call_flow_logic"
+    t.datetime "remotely_queued_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["callout_participation_id"], name: "index_phone_calls_on_callout_participation_id"
     t.index ["contact_id"], name: "index_phone_calls_on_contact_id"
+    t.index ["create_batch_operation_id"], name: "index_phone_calls_on_create_batch_operation_id"
+    t.index ["queue_batch_operation_id"], name: "index_phone_calls_on_queue_batch_operation_id"
+    t.index ["queue_remote_fetch_batch_operation_id"], name: "index_phone_calls_on_queue_remote_fetch_batch_operation_id"
     t.index ["remote_call_id"], name: "index_phone_calls_on_remote_call_id", unique: true
+  end
+
+  create_table "remote_phone_call_events", force: :cascade do |t|
+    t.integer "phone_call_id", null: false
+    t.text "details", default: "{}", null: false
+    t.text "metadata", default: "{}", null: false
+    t.string "remote_call_id", null: false
+    t.string "remote_direction", null: false
+    t.string "call_flow_logic", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phone_call_id"], name: "index_remote_phone_call_events_on_phone_call_id"
   end
 
 end

@@ -1,94 +1,5 @@
 # Usage
 
-## Concepts and Terminology
-
-Somleng SCFM is build around the following key concepts.
-
-### Contacts
-
-A [contact](https://github.com/somleng/somleng-scfm/blob/master/app/models/contact.rb) represents a person who has a [msisdn (aka: phone number)](https://en.wikipedia.org/wiki/MSISDN). Contacts are uniquely indexed by their msisdn. You cannot create two contacts with the same msisdn.
-
-### Callouts
-
-A [callout](https://github.com/somleng/somleng-scfm/blob/master/app/models/callout.rb) represents a collection of phone numbers that need to be called for a particular purpose. A callout has a status and can be *started*, *stopped*, *paused* or *resumed*.
-
-### Callout Participations
-
-A [callout participation](https://github.com/somleng/somleng-scfm/blob/master/app/models/callout_participation.rb) represents a contact who needs to be called for a particular callout. One callout participation may have have multiple phone calls. Callout participations are uniquely indexed by the callout and contact. You cannot create two callout participations with the same callout and contact.
-
-### Phone Calls
-
-A [phone call](https://github.com/somleng/somleng-scfm/blob/master/app/models/phone_call.rb) represents a single attempt at a phone call. A phone call has a status which represents the outcome of the phone call. There may be muliple phone calls for single participation on a callout.
-
-## Tasks
-
-Somleng SCFM Tasks are stand alone rake tasks that can be run manually, from cron or from another application.
-
-### Quickstart
-
-This section explains how to get up and running quickly using tasks. Please continue reading the sections below for detailed information on tasks.
-
-If you want to follow this guide without installing anything locally, run the docker examples instead (assumes you have Docker installed).
-
-#### 1. Create the database
-
-```
-$ bundle exec rake db:create && bundle exec rake db:migrate
-```
-
-or using Docker
-
-```
-$ sudo docker run --rm -v /tmp/somleng-scfm/db:/tmp/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake db:create && bundle exec rake db:migrate && if [ ! -f /tmp/db/somleng_scfm_production.sqlite3 ]; then cp /usr/src/app/db/somleng_scfm_production.sqlite3 /tmp/db; fi'
-```
-
-#### 2. Import contacts
-
-```
-$ DUMMY_CONTACT_MSISDN=replace-with-your-phone-number-or-remove-this-env-variable bundle exec rails runner ./examples/import_contacts.rb
-```
-
-or using Docker
-
-```
-$ sudo docker run --rm -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e DUMMY_CONTACT_MSISDN=replace-with-your-phone-number-or-remove-this-env-variable dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rails runner /usr/src/app/examples/import_contacts.rb'
-```
-
-#### 3. Create a callout
-
-```
-$ bundle exec rake task:callouts:create
-```
-
-or using Docker
-
-```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:create'
-```
-
-#### 4. Populate the callout
-
-```
-$ bundle exec rake task:callouts:populate
-```
-
-or using Docker
-
-```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:populate'
-```
-
-#### 5. Print callout statistics
-
-```
-$ bundle exec rake task:callouts:statistics
-```
-
-or using Docker
-
-```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:statistics'
-```
 
 #### 6. Start the callout and print the statistics to see that it's running
 
@@ -99,7 +10,7 @@ $ CALLOUTS_TASK_ACTION=start bundle exec rake task:callouts:run && bundle exec r
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=start dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=start dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 7. Pause the callout and print the statistics to see that it's paused (optional)
@@ -111,7 +22,7 @@ $ CALLOUTS_TASK_ACTION=pause bundle exec rake task:callouts:run && bundle exec r
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=pause dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=pause dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 8. Resume the callout and print the statistics to see that it's running (optional)
@@ -123,7 +34,7 @@ $ CALLOUTS_TASK_ACTION=resume bundle exec rake task:callouts:run && bundle exec 
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=resume dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=resume dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 9. Stop the callout and print the statistics to see that it's stopped (optional)
@@ -135,7 +46,7 @@ $ CALLOUTS_TASK_ACTION=stop bundle exec rake task:callouts:run && bundle exec ra
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=stop dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=stop dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 10. Resume the callout again and print the statistics to see that it's running (optional)
@@ -147,7 +58,7 @@ $ CALLOUTS_TASK_ACTION=resume bundle exec rake task:callouts:run && bundle exec 
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=resume dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e CALLOUTS_TASK_ACTION=resume dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:callouts:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 11. Enqueue the calls on Somleng (or Twilio) and print the statistics (your phone should ring)
@@ -159,7 +70,7 @@ $ SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" SOMLENG_CLIENT_REST_API_BASE_URL
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" -e SOMLENG_CLIENT_REST_API_BASE_URL="https://api.twilio.com" -e SOMLENG_ACCOUNT_SID="replace-with-your-somleng-or-twilio-account-sid" -e SOMLENG_AUTH_TOKEN="replace-with-your-somleng-or-twilio-auth-token" -e ENQUEUE_CALLS_TASK_DEFAULT_SOMLENG_REQUEST_PARAMS="{\"from\":\"1234\",\"url\":\"http://demo.twilio.com/docs/voice.xml\",\"method\":\"GET\"}" dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:enqueue_calls:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" -e SOMLENG_CLIENT_REST_API_BASE_URL="https://api.twilio.com" -e SOMLENG_ACCOUNT_SID="replace-with-your-somleng-or-twilio-account-sid" -e SOMLENG_AUTH_TOKEN="replace-with-your-somleng-or-twilio-auth-token" -e ENQUEUE_CALLS_TASK_DEFAULT_SOMLENG_REQUEST_PARAMS="{\"from\":\"1234\",\"url\":\"http://demo.twilio.com/docs/voice.xml\",\"method\":\"GET\"}" dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:enqueue_calls:run && bundle exec rake task:callouts:statistics'
 ```
 
 #### 12. Update the call status and print the statistics (run multiple times to watch it change)
@@ -171,7 +82,7 @@ $ SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" SOMLENG_CLIENT_REST_API_BASE_URL
 or using Docker
 
 ```
-$ sudo docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" -e SOMLENG_CLIENT_REST_API_BASE_URL="https://api.twilio.com" -e SOMLENG_ACCOUNT_SID="replace-with-your-somleng-or-twilio-account-sid" -e SOMLENG_AUTH_TOKEN="replace-with-your-somleng-or-twilio-auth-token" dwilkie/somleng-scfm-avf /bin/bash -c 'bundle exec rake task:update_calls:run && bundle exec rake task:callouts:statistics'
+$ docker run --rm -t -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production -e SOMLENG_CLIENT_REST_API_HOST="api.twilio.com" -e SOMLENG_CLIENT_REST_API_BASE_URL="https://api.twilio.com" -e SOMLENG_ACCOUNT_SID="replace-with-your-somleng-or-twilio-account-sid" -e SOMLENG_AUTH_TOKEN="replace-with-your-somleng-or-twilio-auth-token" dwilkie/somleng-scfm /bin/bash -c 'bundle exec rake task:update_calls:run && bundle exec rake task:callouts:statistics'
 ```
 
 Optionally repeat step 11, this time your phone should not ring
@@ -185,7 +96,7 @@ $ bundle exec rails c
 or using Docker
 
 ```
-$ sudo docker run --rm -it -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf bundle exec rails c
+$ docker run --rm -it -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm bundle exec rails c
 ```
 
 #### 14. Boot the Database Console (optional)
@@ -197,7 +108,19 @@ $ bundle exec rails dbconsole
 or using Docker
 
 ```
-$ sudo docker run --rm -it -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm-avf bundle exec rails dbconsole
+$ docker run --rm -it -v /tmp/somleng-scfm/db:/usr/src/app/db -e RAILS_ENV=production dwilkie/somleng-scfm bundle exec rails dbconsole
+```
+
+#### 15. List available rake tasks (optional)
+
+```
+$ bundle exec rake -T
+```
+
+or using Docker
+
+```
+$ docker run --rm -t -e RAILS_ENV=production dwilkie/somleng-scfm bundle exec rake -T
 ```
 
 ### Global Task Configuration
@@ -224,38 +147,6 @@ Each task has it's own specific configuration which is documented below. Some ta
 
 The [callouts task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/callouts_task.rb) performs various operations on callouts.
 
-#### task:callouts:create
-
-Creates a new callout and prints the callout id.
-
-##### Task Configuration
-
-`CALLOUTS_TASK_CREATE_METADATA` configures the default metadata to be set when creating a callout (defaults to nil). For example, setting `CALLOUTS_TASK_CREATE_METADATA="{\"foo\":\"bar\"}"` will create the callout with the specified metadata. The metadata is default metadata only and can be overriden in [the task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/callouts_task.rb).
-
-##### Example
-
-```
-$ CALLOUTS_TASK_CREATE_METADATA="{}" bundle exec rake task:callouts:create
-```
-
-#### task:callouts:populate
-
-Populates a callout with participations to call.
-
-##### Task Configuration
-
-`CALLOUTS_TASK_POPULATE_METADATA` configures the default metadata to be set on the callout participation when populating the callout (defaults to nil). For example, setting `CALLOUTS_TASK_POPULATE_METADATA="{\"foo\":\"bar\"}"` will populate the callout with participations containing the specified metadata. The metadata is default metadata only and can be overriden in [the task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/callouts_task.rb).
-
-`CALLOUTS_TASK_CALLOUT_ID` tells the task which callout to populate. If `CALLOUTS_TASK_CALLOUT_ID` is not specified it's assumed there is only one callout in the database. If there are multiple an exception is raised.
-
-By default callouts are populated with all the contacts in the Contacts table. Override the `contacts_to_populate_with` in the [task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/callouts_task.rb) to modify this behavior.
-
-##### Example
-
-```
-$ CALLOUTS_TASK_POPULATE_METADATA="{}" CALLOUTS_TASK_CALLOUT_ID= bundle exec rake task:callouts:populate
-```
-
 #### task:callouts:run
 
 *start*, *stop*, *pause* or *resume* a callout
@@ -270,14 +161,6 @@ $ CALLOUTS_TASK_POPULATE_METADATA="{}" CALLOUTS_TASK_CALLOUT_ID= bundle exec rak
 
 ```
 $ CALLOUTS_TASK_ACTION="start|stop|pause|resume" CALLOUTS_TASK_CALLOUT_ID= bundle exec rake task:callouts:run
-```
-
-#### task:callouts:statistics
-
-Prints statistics for a given callout. If `CALLOUTS_TASK_CALLOUT_ID` is specified then statistics for the callout with the specified id will be printed. If `CALLOUTS_TASK_CALLOUT_ID` is not specified then it's assumed there is only one callout in the database. If there are multiple an exception is raised.
-
-```
-$ CALLOUTS_TASK_CALLOUT_ID= bundle exec rake task:callouts:statistics
 ```
 
 ### Enqueue Calls
@@ -330,32 +213,4 @@ See [Somleng Configuration](#somleng-configuration)
 
 ```
 $ UPDATE_CALLS_TASK_MAX_CALLS_TO_FETCH=1000 bundle exec rake task:update_calls:run
-```
-
-### Start RapidPro Flow
-
-Handles triggering a RapidPro flow.
-
-#### rake task:start_flow_rapidpro:run
-
-The [start flow rapidpro task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/start_flow_rapidpro_task.rb) triggers a remote flow on [RapidPro](https://community.rapidpro.io/).
-
-##### Task Configuration
-
-`START_FLOW_RAPIDPRO_TASK_MAX_FLOWS_TO_START` configures the maximum number of flows to trigger when running this task (defaults to nil).
-
-`START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS` configures an amount of time to sleep in between triggering RapidPro flows (defaults to nil (no sleep)). For example setting `START_FLOW_RAPIDPRO_TASK_SLEEP_BETWEEN_FLOW_STARTS=0.75` would sleep for `0.75` seconds between triggering flow starts on RapidPro.
-
-`START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS` configures the default request parameters that will be sent to RapidPro for each remote request (defaults to nil). For example, setting `START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS="{\"flow\":\"flow-id\",\"groups\":[],\"contacts\":[],\"urns\":[\"telegram:telegram-id\"],\"extra\":{}}"` would send these parameters to the the start flow remote request on RapidPro. These params are default params only and can be overriden in [the task](https://github.com/somleng/somleng-scfm/blob/master/app/tasks/start_flow_rapidpro_task.rb).
-
-`RAPIDPRO_BASE_URL` configures the base url to send RapidPro requests (defaults to `https://app.rapidpro.io/api`)
-
-`RAPIDPRO_API_VERSION` configures the API version for RapidPro (defaults to `v2`)
-
-`RAPIDPRO_API_TOKEN` configures the API token needed to authenticate with RapidPro (defaults to nil)
-
-##### Example
-
-```
-$ RAPIDPRO_BASE_URL="https://app.rapidpro.io/api" RAPIDPRO_API_VERSION="v2" RAPIDPRO_API_TOKEN="rapidpro-api-token" START_FLOW_RAPIDPRO_TASK_MAX_FLOWS_TO_START=1000 START_FLOW_RAPIDPRO_TASK_REMOTE_REQUEST_PARAMS="{\"flow\":\"flow-id\",\"groups\":[],\"contacts\":[],\"urns\":[\"telegram:telegram-id\"],\"extra\":{}}" bundle exec rake task:start_flow_rapidpro:run
 ```

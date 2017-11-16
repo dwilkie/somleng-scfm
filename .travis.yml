@@ -16,7 +16,7 @@ addons:
     repo_token:
       secure: "GWi7hiAMEgFb2pQ4ahkk8o/vyOxvJUx9gKznEGH2zrcngk+D8w+4skPdTV5qWDLqVIn9ADl9z6T/7UuMd4RMZMpsZlwG/YVFxDba9YFjZ+Rqng1+UX3h/7q7vyZOQqCxeaN5ohOS92SYo4E6uh3qWZAL/tvmAfbECtSpC5b+w8uKpvV6Fmthdg5X2dvZhA8+DpCwlEWJkDLiXLO3bakyemmyAt4wlxKdXwiUdVEuwX0eTwdWSxHFNFNIgVN8aqf+N2FgJ7GCxwZQB70CP2VL9BET3dFaMgrfx5yk0/gxqifmeqR2g3Dv6n8MMKiTVJZVftwHMiEcyzGf891w2PJYPkxUzt72XYhu+8ef/HKemlffW/82XGuO6NpynrGG7Rsr7EyELs7jcAqGEUs0Cto1nsHMJxDI3ONtviAgAAP2ts8EmfMp8SX8ITFVkoVVqx2LXgaP9Xkp/nJma4HpRAPaQo6t2dLNJdCnE1I+UJOgpdUhiY+x38+Ezvgu0CWDqn07oK7u6yiIfyfsKEzYq5w0wgWFqz6a/o0k0zOzN1BXBJvRAmPkPWy1V7In2p4/IHe00q/VT5b/nFE0GwJC1/5bm1z83qmTPFMoxp9QLaP3U5nFiCFetuPO/Tp06cCufpX+BcE5G1je0jvSpfRJOO4CgS+Gj1j1LNqiTRIvGhRCF1Y="
 before_install:
-  - bash -c '[[ "$DOCKER" != "1" && "$RAILS_DB_ADAPTER" = "sqlite3" ]] && sudo add-apt-repository ppa:jonathonf/backports -y && sudo apt-get update -q && sudo apt-get install sqlite3 -y || echo "SQLite3 not needed"'
+  - bash -c '[[ "$DOCKER" != "1" && "$RAILS_DB_ADAPTER" = "sqlite3" ]] && sudo add-apt-repository ppa:jonathonf/backports -y && sudo apt-get update -q && sudo apt-get install sqlite3 -y && sqlite3 --version || echo "SQLite3 not needed"'
 before_script:
   - bash -c '[[ "${DOCKER}" != "1" ]] && psql -c "create database somleng_scfm_test;" -U postgres || echo "Running tests inside docker container"'
 script:

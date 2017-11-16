@@ -1,6 +1,7 @@
 class CalloutParticipation < ApplicationRecord
   include MsisdnHelpers
   include MetadataHelpers
+  include HasCallFlowLogic
 
   DEFAULT_RETRY_STATUSES = [
     "failed"
@@ -8,6 +9,10 @@ class CalloutParticipation < ApplicationRecord
 
   belongs_to :callout
   belongs_to :contact
+  belongs_to :callout_population,
+             :optional => true,
+             :class_name => "BatchOperation::CalloutPopulation"
+
   has_many :phone_calls
 
   validates :contact_id,
@@ -16,8 +21,14 @@ class CalloutParticipation < ApplicationRecord
   validates :msisdn,
             :uniqueness => {:scope => :callout_id}
 
-  def self.from_running_callout
-    joins(:callout).merge(Callout.running)
+  delegate :call_flow_logic, :to => :callout, :prefix => true, :allow_nil => true
+  delegate :msisdn, :to => :contact, :prefix => true, :allow_nil => true
+
+  before_validation :set_msisdn_from_contact,
+                    :on => :create
+
+  def call_flow_logic
+    super || callout_call_flow_logic
   end
 
   def self.no_phone_calls_or_last_attempt(status)
@@ -30,16 +41,12 @@ class CalloutParticipation < ApplicationRecord
     )
   end
 
-  def self.completed
-    last_phone_call_attempt(PhoneCall.aasm.states.map(&:to_s) - retry_statuses)
-  end
-
-  def self.remaining
-    no_phone_calls_or_last_attempt(retry_statuses)
-  end
-
   def self.no_phone_calls
     left_outer_joins(:phone_calls).where(:phone_calls => {:id => nil})
+  end
+
+  def self.has_phone_calls
+    joins(:phone_calls)
   end
 
   def self.last_phone_call_attempt(status)
@@ -63,15 +70,9 @@ class CalloutParticipation < ApplicationRecord
     )
   end
 
-  def self.last_phone_call_attempt_not(status)
-    status_scope = PhoneCall.where.not(:status => [status])
-  end
+  private
 
-  def self.default_retry_statuses
-    DEFAULT_RETRY_STATUSES
-  end
-
-  def self.retry_statuses
-    ENV["CALLOUT_PARTICIPATION_RETRY_STATUSES"].present? ? ENV["CALLOUT_PARTICIPATION_RETRY_STATUSES"].to_s.split(",") : default_retry_statuses
+  def set_msisdn_from_contact
+    self.msisdn ||= contact_msisdn
   end
 end
