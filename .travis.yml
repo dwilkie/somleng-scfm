@@ -38,3 +38,17 @@ deploy:
       repo: dwilkie/somleng-scfm-avf
       branch: master
       condition: $RAILS_DB_ADAPTER = postgresql
+  - provider: elasticbeanstalk
+    edge: true
+    access-key-id:
+      secure: "BD5CIhzm97RiM1/q5EvI2r7XDxpL6+iuYoBms0vuZvleZFUjgN7c0JCqJ4OIk1S7DtpBKjRMppZ96b3yE/Qu28hj/qexdeEsoNUbbXuQPaLM2Zd/wtUlR0Q3RcKf0Ch1tVcBYPgUuuw2+MGFos6bYinqZtAIjY8MQ99Gs3Tg58U6igwt/ts97Bbh/QaK6DlEZ+u/xiDvAWUwXiUZTyKO0xvlZBBdJwiilNxn3Zvr9EWWAWSmx56/GyqhZXGoXLf0UGLMRZxn4SuRg56TCtqb+EMWWJ0Uf6JKq5DwSvuOVpgPIyiDHk8HKupOa+79GnqK6/U3J9yuzUB00OhSlibFGoEwdSJvMRHTJVwqUHKaCktTzyhAKSfAEHlGETr+MPJV81Jwhf8EfGvlsCMMsShMP+sudCIYoldzJck06rB0fy4uXFV0bjzwKuWqfQlr9GFKinAgVN0YNGBZSgaHu8pCDAZt3zWo+xdmuLc9BPUetgsr9z60xpIxbTO+DLaNqVWKx/pSCccYyMX0GejIFG4QTZFp6Omf9TUJQOaD5l50aGMD8doUzVAFvwTk+/1Wx7iBOAn4REpZdUzl/p3bCK3uXT59zBjcZdZSy4uUeCnoM6/yRMaotGtvnAHjUodxJp1gikqJd5lXx1Gkn3YekIx8Pk+39Sj9dlWJJddKH4gCRgQ="
+    secret-access-key:
+      secure: "gGB4Gr6ovx2jorEcwwgEk73kWiiCXFKLmN7aiFrp6x3iWuPFANqUNanx02WRuU3Fu4lX9GcJFsws1PGFxW9rx1UT25Dwt4PrqB0VfKJ05vZLjEOnHpmzGpK0uZG6DMe3Apcvb34uguRglpyVmWI4IKr2gB0qjHeAfJE3UI5iuxzddCRrYB+DQ7txO56AcU8vgrTHBstXGXAoi6zTu9qNjCDEvKMHQ4ds1MRoyqXj9sCcIYEZXqBtOfrO67YQI9qPmaH6NMgM8HlI8alCdvlmNZRfsNOH0y7JcED2OaiJ9hDT61nQ97nAgdyGCew4oxHIEjIcs/hmCeIJBYoYhhqZxJlDMjB7a8g1B65bPXG4d81Uy2CzKuOSLQgrGOc72emt92PL5UT+xYe6/sW0k2GC/hINah9LKZppMIKYCT5yN60gDbz5hvJjcGca6PtwrVOPaYyFlwY961Z8Hp77dC82aqJ3yAsdnoDnddThefWMccH14bipDnDcka0+vm1oY81uQHqPQP4S/3BnRJrc9dSLeyZPF6M8p+PrwV4i1zn4Afv7uupLcIYhKdSmFxWIibOZhZQpDsxdte9QDCkwouNKhQor8nfxy8EEIeXSceiFMabc691hEKzER+JxfA67F19pf9zYm+KStOw4JOOTmDK1fNZAIzb2DpRva5glkUhzTOo="
+    region: eu-west-1
+    app: somleng-scfm
+    env: somleng-scfm-worker1
+    bucket_name: travis.somleng-scfm.avf
+    on:
+      repo: dwilkie/somleng-scfm-avf
+      branch: master
+      condition: $RAILS_DB_ADAPTER = postgresql
