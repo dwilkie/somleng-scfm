@@ -25,12 +25,15 @@ class Api::RemotePhoneCallEventsController < Api::FilteredController
   end
 
   def call_flow_logic_instance
-    @call_flow_logic_instance ||= call_flow_logic.new(resource)
+    @call_flow_logic_instance ||= call_flow_logic.new(
+      :event => resource,
+      :current_url => request.original_url
+    )
   end
 
   def call_flow_logic
     @call_flow_logic ||= begin
-      resource_call_flow_logic = CallFlowLogic::Base.descendants.map(&:to_s).select { |available_call_flow_logic| available_call_flow_logic == resource.call_flow_logic }.first
+      resource_call_flow_logic = CallFlowLogic::Base.registered.map(&:to_s).select { |registered_call_flow_logic| registered_call_flow_logic == resource.call_flow_logic }.first
       (resource_call_flow_logic && resource_call_flow_logic.constantize) || CallFlowLogic::Application
     end
   end
@@ -45,11 +48,7 @@ class Api::RemotePhoneCallEventsController < Api::FilteredController
 
   # https://www.twilio.com/docs/api/twiml/twilio_request
   def permitted_build_params
-    params.permit(
-      "CallSid", "From", "To",
-      "CallStatus", "Direction",
-      "AccountSid", "ApiVersion", "Digits"
-    )
+    params.permit!.except(:action, :controller, :format)
   end
 
   def permitted_update_params
