@@ -392,7 +392,7 @@ Sample Response:
 }
 ```
 
-Note that the callout's status is initialized. This is the initial state for a callout. Callouts can be either initialized, running, paused or stopped. Also notice that our callout has no `call_flow_logic`. We'll update this later.
+Note that the callout's `status` is `initialized`. This is the initial state for a callout. Callouts can be either `initialized`, `running`, `paused` or `stopped`. Also notice that our callout has no `call_flow_logic`. We'll update this later.
 
 ## Populating a Callout
 
@@ -1440,7 +1440,7 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
 
 ```json
 {
-  "id": 4,
+  "id": 3,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1462,20 +1462,20 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "remote_queue_response": {},
   "call_flow_logic": null,
   "remotely_queued_at": null,
-  "created_at": "2017-11-19T03:28:42.591Z",
-  "updated_at": "2017-11-19T03:29:49.646Z"
+  "created_at": "2017-11-24T05:41:38.394Z",
+  "updated_at": "2017-11-24T05:41:38.394Z"
 }
 ```
 
 And go ahead and queue it again.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/4/phone_call_events -d event=queue | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/3/phone_call_events -d event=queue | jq'
 ```
 
 ```json
 {
-  "id": 4,
+  "id": 3,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1497,20 +1497,20 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "remote_queue_response": {},
   "call_flow_logic": null,
   "remotely_queued_at": null,
-  "created_at": "2017-11-19T03:28:42.591Z",
-  "updated_at": "2017-11-19T03:31:57.703Z"
+  "created_at": "2017-11-24T05:41:38.394Z",
+  "updated_at": "2017-11-24T05:43:05.515Z"
 }
 ```
 
 Then fetch it to check it's status
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/4 | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/3 | jq'
 ```
 
 ```json
 {
-  "id": 4,
+  "id": 3,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1518,7 +1518,7 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "queue_remote_fetch_batch_operation_id": null,
   "status": "remotely_queued",
   "msisdn": "+252662345678",
-  "remote_call_id": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
+  "remote_call_id": "082305b2-a0e4-4921-89bf-7bb544fd6910",
   "remote_status": "queued",
   "remote_direction": "outbound-api",
   "remote_error_message": null,
@@ -1530,25 +1530,25 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
     "method": "GET"
   },
   "remote_queue_response": {
-    "account_sid": "twilio-account-sid",
+    "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
     "api_version": "2010-04-01",
-    "date_created": "2017-11-19T03:31:58.000+00:00",
-    "date_updated": "2017-11-19T03:31:58.000+00:00",
+    "date_created": "2017-11-24T05:43:19.000+00:00",
+    "date_updated": "2017-11-24T05:43:19.000+00:00",
     "direction": "outbound-api",
     "from": "345",
     "from_formatted": "+34 5 ",
     "price": 0,
-    "sid": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
+    "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
     "status": "queued",
     "subresource_uris": {},
     "to": "+252662345678",
     "to_formatted": "+252 66 234 5678",
-    "uri": "/api/2010-04-01/Accounts/twilio-account-sid/Calls/2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8"
+    "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
   },
   "call_flow_logic": null,
-  "remotely_queued_at": "2017-11-19T03:31:58.427Z",
-  "created_at": "2017-11-19T03:28:42.591Z",
-  "updated_at": "2017-11-19T03:31:58.427Z"
+  "remotely_queued_at": "2017-11-24T05:43:20.446Z",
+  "created_at": "2017-11-24T05:41:38.394Z",
+  "updated_at": "2017-11-24T05:43:20.446Z"
 }
 ```
 
@@ -1559,12 +1559,12 @@ This looks better! We can see that the `status` is now `remotely_queued` and tha
 Now that our call was queued remotely, it would be nice to see what happened to it. Using the phone call events API we can queue a job for fetching the remote status of a call.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/4/phone_call_events -d event=queue_remote_fetch | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/3/phone_call_events -d event=queue_remote_fetch | jq'
 ```
 
 ```json
 {
-  "id": 4,
+  "id": 3,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1572,7 +1572,7 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "queue_remote_fetch_batch_operation_id": null,
   "status": "remote_fetch_queued",
   "msisdn": "+252662345678",
-  "remote_call_id": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
+  "remote_call_id": "082305b2-a0e4-4921-89bf-7bb544fd6910",
   "remote_status": "queued",
   "remote_direction": "outbound-api",
   "remote_error_message": null,
@@ -1584,25 +1584,25 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
     "method": "GET"
   },
   "remote_queue_response": {
-    "account_sid": "twilio-account-sid",
+    "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
     "api_version": "2010-04-01",
-    "date_created": "2017-11-19T03:31:58.000+00:00",
-    "date_updated": "2017-11-19T03:31:58.000+00:00",
+    "date_created": "2017-11-24T05:43:19.000+00:00",
+    "date_updated": "2017-11-24T05:43:19.000+00:00",
     "direction": "outbound-api",
     "from": "345",
     "from_formatted": "+34 5 ",
     "price": 0,
-    "sid": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
+    "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
     "status": "queued",
     "subresource_uris": {},
     "to": "+252662345678",
     "to_formatted": "+252 66 234 5678",
-    "uri": "/api/2010-04-01/Accounts/twilio-account-sid/Calls/2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8"
+    "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
   },
   "call_flow_logic": null,
-  "remotely_queued_at": "2017-11-19T03:31:58.427Z",
-  "created_at": "2017-11-19T03:28:42.591Z",
-  "updated_at": "2017-11-19T03:31:58.427Z"
+  "remotely_queued_at": "2017-11-24T05:43:20.446Z",
+  "created_at": "2017-11-24T05:41:38.394Z",
+  "updated_at": "2017-11-24T05:44:03.102Z"
 }
 ```
 
@@ -1611,40 +1611,39 @@ Here we see the `status` is now `remote_fetch_queued` which means that a remote 
 Let's fetch the call again to see if it's been updated.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/4 | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/3 | jq'
 ```
 
 ```json
 {
-  "id": 4,
+  "id": 3,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
   "queue_batch_operation_id": null,
   "queue_remote_fetch_batch_operation_id": null,
-  "status": "failed",
+  "status": "canceled",
   "msisdn": "+252662345678",
-  "remote_call_id": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
-  "remote_status": "queued",
+  "remote_call_id": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+  "remote_status": "canceled",
   "remote_direction": "outbound-api",
   "remote_error_message": null,
   "metadata": {},
   "remote_response": {
-    "account_sid": "twilio-account-sid",
+    "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
     "api_version": "2010-04-01",
-    "date_created": "2017-11-19T03:31:58.000+00:00",
-    "date_updated": "2017-11-19T03:31:58.000+00:00",
+    "date_created": "2017-11-24T05:43:19.000+00:00",
+    "date_updated": "2017-11-24T05:43:19.000+00:00",
     "direction": "outbound-api",
-    "duration": "0",
     "from": "345",
     "from_formatted": "+34 5 ",
     "price": 0,
-    "sid": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
-    "status": "failed",
+    "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+    "status": "canceled",
     "subresource_uris": {},
     "to": "+252662345678",
     "to_formatted": "+252 66 234 5678",
-    "uri": "/api/2010-04-01/Accounts/twilio-account-sid/Calls/2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8"
+    "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
   },
   "remote_request_params": {
     "from": "345",
@@ -1652,29 +1651,29 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
     "method": "GET"
   },
   "remote_queue_response": {
-    "account_sid": "twilio-account-sid",
+    "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
     "api_version": "2010-04-01",
-    "date_created": "2017-11-19T03:31:58.000+00:00",
-    "date_updated": "2017-11-19T03:31:58.000+00:00",
+    "date_created": "2017-11-24T05:43:19.000+00:00",
+    "date_updated": "2017-11-24T05:43:19.000+00:00",
     "direction": "outbound-api",
     "from": "345",
     "from_formatted": "+34 5 ",
     "price": 0,
-    "sid": "2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8",
+    "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
     "status": "queued",
     "subresource_uris": {},
     "to": "+252662345678",
     "to_formatted": "+252 66 234 5678",
-    "uri": "/api/2010-04-01/Accounts/twilio-account-sid/Calls/2ab9b23d-14de-4fa8-a5a2-75cb6dfd59b8"
+    "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
   },
   "call_flow_logic": null,
-  "remotely_queued_at": "2017-11-19T03:31:58.427Z",
-  "created_at": "2017-11-19T03:28:42.591Z",
-  "updated_at": "2017-11-19T03:31:58.427Z"
+  "remotely_queued_at": "2017-11-24T05:43:20.446Z",
+  "created_at": "2017-11-24T05:41:38.394Z",
+  "updated_at": "2017-11-24T05:44:06.099Z"
 }
 ```
 
-Now we can see that the call was updated and the `status` is `failed`. We can also see the full response from Twilio/Somleng in the `remote_response` attribute.
+Now we can see that the call was updated and the `status` is `canceled`. We can also see the full response from Twilio/Somleng in the `remote_response` attribute.
 
 ### Using your own call flow logic
 
@@ -1690,7 +1689,7 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
 
 ```json
 {
-  "id": 5,
+  "id": 4,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1711,14 +1710,14 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "remote_queue_response": {},
   "call_flow_logic": null,
   "remotely_queued_at": null,
-  "created_at": "2017-11-20T05:04:29.661Z",
-  "updated_at": "2017-11-20T05:04:29.661Z"
+  "created_at": "2017-11-24T05:45:22.310Z",
+  "updated_at": "2017-11-24T05:45:22.310Z"
 }
 ```
 
 We can see from the output that the phone call has been created successfully with the `remote_request_params` that we specified. Also notice that the `call_flow_logic` is `null`. The `call_flow_logic` parameter allows us to specify which call flow logic will be executed when a request is received from Twilio or Somleng to the `url` endpoint. By default the `call_flow_logic` parameter is `null` which means that it will execute the default application call flow logic, which is defined [here](https://github.com/somleng/somleng-scfm/blob/master/app/models/call_flow_logic/application.rb). If you take a look at that file you'll see it's a plain ruby class which implements the `to_xml` method. The `to_xml` method returns valid TwiML using the [twilio-ruby](https://github.com/twilio/twilio-ruby) which simply says the words "Thanks for trying our documentation. Enjoy!" then plays a song.
 
-But what if we want to use our own call flow logic? In order to do this you can define a ruby class in your application inheriting `CallFlowLogic::Base`, then implement the `to_xml` method (for some more complex examples checkout the [call_flow_logic directory](https://github.com/somleng/somleng-scfm/tree/master/app/models/call_flow_logic)). Once you have defined your call flow logic you can set it on a callout, callout participation or phone call. For this example let's try to set the call flow logic to `CallFlowLogic::OutcomeMonitoring` which is already defined in the call_flow_logic directory](https://github.com/somleng/somleng-scfm/tree/master/app/models/call_flow_logic).
+But what if we want to use our own call flow logic? In order to do this you can define a ruby class in your application inheriting `CallFlowLogic::Base`, then implement the `to_xml` method (for some more complex examples checkout the [call_flow_logic directory](https://github.com/somleng/somleng-scfm/tree/master/app/models/call_flow_logic)). Once you have defined your call flow logic you can set it on a callout, callout participation or phone call. For this example let's try to set the call flow logic to `CallFlowLogic::OutcomeMonitoring` which is already defined in the [call_flow_logic directory](https://github.com/somleng/somleng-scfm/tree/master/app/models/call_flow_logic).
 
 ```
 $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -XPATCH http://scfm:3000/api/phone_calls/5 -d call_flow_logic=CallFlowLogic::OutcomeMonitoring | jq'
@@ -1757,7 +1756,7 @@ $ docker run -it --rm -v /tmp/somleng-scfm/db:/usr/src/app/db -p 3000:3000 -h sc
 Ok let's try to use our call flow logic again.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -XPATCH http://scfm:3000/api/phone_calls/5 -d call_flow_logic=CallFlowLogic::OutcomeMonitoring'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -XPATCH http://scfm:3000/api/phone_calls/4 -d call_flow_logic=CallFlowLogic::OutcomeMonitoring'
 ```
 
 ```
@@ -1767,12 +1766,12 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v 
 Looks better. Let's fetch the phone call again to make sure it's been updated with our call flow logic.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/5 | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/phone_calls/4 | jq'
 ```
 
 ```json
 {
-  "id": 5,
+  "id": 4,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1793,20 +1792,20 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "remote_queue_response": {},
   "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
   "remotely_queued_at": null,
-  "created_at": "2017-11-20T05:04:29.661Z",
-  "updated_at": "2017-11-20T05:04:29.661Z"
+  "created_at": "2017-11-24T05:45:22.310Z",
+  "updated_at": "2017-11-24T05:46:07.622Z"
 }
 ```
 
 Now we can see that the `call_flow_logic` has been successfully updated. Finally let's go ahead and queue the call.
 
 ```
-$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/5/phone_call_events -d event=queue | jq'
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/phone_calls/4/phone_call_events -d event=queue | jq'
 ```
 
 ```json
 {
-  "id": 5,
+  "id": 4,
   "callout_participation_id": 3,
   "contact_id": 1,
   "create_batch_operation_id": null,
@@ -1827,11 +1826,1716 @@ $ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s 
   "remote_queue_response": {},
   "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
   "remotely_queued_at": null,
-  "created_at": "2017-11-20T05:04:29.661Z",
-  "updated_at": "2017-11-20T10:14:22.960Z"
+  "created_at": "2017-11-24T05:45:22.310Z",
+  "updated_at": "2017-11-24T05:46:41.262Z"
 }
 ```
 
 We can see that the call's `status` was `queued`. As before we can go ahead and fetch the call again to see if it's been remotely queued. We can also update it's remote status.
 
-## Phone Call Events
+## Phone Call Batch Operations (Create)
+
+So far we have gone through [managing contacts](#managing-contacts), [creating callouts](#managing-callouts), [populating callouts](#populating-a-callout), [managing callout participations](#managing-callout-participations) and [managing phone calls](#managing-phone-calls) for participants.
+
+Recall when we went through [populating callouts](#populating-a-callout) we used a batch operation to filter contacts, preview the callout population then finally queue the batch operation for creating callout participations? It turns out we can also use a batch operation for creating, remotely queuing and updating the remote status of multiple phone calls. A single batch operation can be used to create phone calls across multiple callouts.
+
+### Create another callout
+
+In order to demonstrate this let's go and [create a second callout](#managing-callouts) and populate it with participations.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/callouts | jq'
+```
+
+```json
+{
+  "id": 2,
+  "status": "initialized",
+  "call_flow_logic": null,
+  "metadata": {},
+  "created_at": "2017-11-23T03:13:39.136Z",
+  "updated_at": "2017-11-23T03:13:39.136Z"
+}
+```
+
+Now that we have our second callout, let's go and [populate it](#populating-a-callout) with callout participations.
+
+First create a batch operation for populating our new callout:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/callouts/2/batch_operations -d type=BatchOperation::CalloutPopulation | jq'
+```
+
+```json
+{
+  "id": 2,
+  "callout_id": 2,
+  "parameters": {},
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-23T03:17:42.371Z",
+  "updated_at": "2017-11-23T03:17:42.371Z"
+}
+```
+
+Then preview the batch operation:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -v http://scfm:3000/api/batch_operations/2/preview/contacts | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 1,
+    "msisdn": "+252662345678",
+    "metadata": {
+      "name": "Alice",
+      "gender": "f"
+    },
+    "created_at": "2017-11-23T03:12:06.684Z",
+    "updated_at": "2017-11-23T03:12:55.097Z"
+  },
+  {
+    "id": 2,
+    "msisdn": "+252662345679",
+    "metadata": {
+      "name": "Bob",
+      "gender": "m"
+    },
+    "created_at": "2017-11-23T03:12:21.240Z",
+    "updated_at": "2017-11-23T03:12:21.240Z"
+  }
+]
+```
+
+Queue it for population:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/batch_operations/2/batch_operation_events -d "event=queue" | jq'
+```
+
+```json
+{
+  "id": 2,
+  "callout_id": 2,
+  "parameters": {},
+  "metadata": {},
+  "status": "queued",
+  "created_at": "2017-11-23T03:17:42.371Z",
+  "updated_at": "2017-11-23T03:20:14.283Z"
+}
+```
+
+And finally check the participants:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/2/contacts | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 1,
+    "msisdn": "+252662345678",
+    "metadata": {
+      "name": "Alice",
+      "gender": "f"
+    },
+    "created_at": "2017-11-23T03:12:06.684Z",
+    "updated_at": "2017-11-23T03:12:55.097Z"
+  },
+  {
+    "id": 2,
+    "msisdn": "+252662345679",
+    "metadata": {
+      "name": "Bob",
+      "gender": "m"
+    },
+    "created_at": "2017-11-23T03:12:21.240Z",
+    "updated_at": "2017-11-23T03:12:21.240Z"
+  }
+]
+```
+
+Alice and Bob are now both participants in the first callout and the second callout. We can double check this by looking at all callout participations across all callouts.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/callout_participations | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 4
+```
+
+```json
+[
+  {
+    "id": 2,
+    "callout_id": 1,
+    "contact_id": 2,
+    "callout_population_id": null,
+    "msisdn": "+252662345679",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:37:57.777Z",
+    "updated_at": "2017-11-24T05:37:57.777Z"
+  },
+  {
+    "id": 3,
+    "callout_id": 1,
+    "contact_id": 1,
+    "callout_population_id": 1,
+    "msisdn": "+252662345678",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:38:41.562Z",
+    "updated_at": "2017-11-24T05:38:41.562Z"
+  },
+  {
+    "id": 4,
+    "callout_id": 2,
+    "contact_id": 1,
+    "callout_population_id": 2,
+    "msisdn": "+252662345678",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.534Z",
+    "updated_at": "2017-11-24T05:47:50.534Z"
+  },
+  {
+    "id": 5,
+    "callout_id": 2,
+    "contact_id": 2,
+    "callout_population_id": 2,
+    "msisdn": "+252662345679",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.545Z",
+    "updated_at": "2017-11-24T05:47:50.545Z"
+  }
+]
+```
+
+Now let's take a closer look at our actual callouts.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/callouts | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 1,
+    "status": "initialized",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-23T03:13:34.487Z",
+    "updated_at": "2017-11-23T03:13:34.487Z"
+  },
+  {
+    "id": 2,
+    "status": "initialized",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-23T03:13:39.136Z",
+    "updated_at": "2017-11-23T03:13:39.136Z"
+  }
+]
+```
+
+We can see that both of our callouts have the `status` `initialized` and that both of them have a `call_flow_logic` of `null`
+
+### More about Callouts
+
+For this example, let's assume that we want to use the `CallFlowLogic::OutcomeMonitoring` logic for all calls in the second callout, but not the first. Also let's assume that we don't want to create any phone calls for the first callout which is using a different call flow.
+
+#### Updating
+
+Firstly let's go ahead and update the `call_flow_logic` for the second callout. Note that you'll have to register this callout first as explained in the previous section.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -XPATCH http://scfm:3000/api/callouts/2 -d call_flow_logic="CallFlowLogic::OutcomeMonitoring"'
+```
+
+```
+< HTTP/1.1 204 No Content
+```
+
+#### Fetching
+
+Now let's fetch the callout to make sure that it was updated successfully:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/callouts/2 | jq'
+```
+
+```
+{
+  "id": 2,
+  "status": "initialized",
+  "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+  "metadata": {},
+  "created_at": "2017-11-23T03:13:39.136Z",
+  "updated_at": "2017-11-23T03:35:50.274Z"
+}
+```
+
+#### Events
+
+Now we can see that our `call_flow_logic` has been updated to `CallFlowLogic::OutcomeMonitoring`, but the `status` is still `initialized`. The status of a callout can be either `initialized`, `running`, `paused` or `stopped`. We can change the status by either, `starting`, `stopping`, `pausing` or `resuming` the callout.
+
+Since, that for this example we only want to deal with the second callout, let's go ahead and set the status to `running` by `starting` the callout.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -XPOST -s http://scfm:3000/api/callouts/2/callout_events -d "event=start" | jq'
+```
+
+```
+{
+  "id": 2,
+  "status": "running",
+  "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+  "metadata": {},
+  "created_at": "2017-11-23T03:13:39.136Z",
+  "updated_at": "2017-11-23T03:52:51.145Z"
+}
+```
+
+#### Filtering
+
+Now that our second callout's `status` is `running` we can filter all callouts on the status. The following command lists all callouts with the `status` equal to `running`.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -g http://scfm:3000/api/callouts?q[status]="running" | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 1
+```
+
+```json
+[
+  {
+    "id": 2,
+    "status": "running",
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "metadata": {},
+    "created_at": "2017-11-23T03:13:39.136Z",
+    "updated_at": "2017-11-23T03:52:51.145Z"
+  }
+]
+```
+
+To summarize this is what we just did:
+
+1. Created a second callout
+2. Populated it
+3. Set the call flow logic
+4. Started it
+
+### Create a Batch Operation for creating phone calls
+
+Let's see how we can use a batch operation for creating phone calls across callouts. First let's go ahead and create a batch operation for creating phone calls.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -XPOST http://scfm:3000/api/batch_operations -d type=BatchOperation::PhoneCallCreate | jq'
+```
+
+```
+< HTTP/1.1 422 Unprocessable Entity
+```
+
+```json
+{
+  "errors": {
+    "remote_request_params": [
+      "can't be blank"
+    ]
+  }
+}
+```
+
+Oops, that didn't seem to have worked. It's saying that we haven't specified any `remote_request_params`.
+
+When using a batch operation for creating phone calls that batch operation must be able to create valid phone calls. Recall when [creating a phone call using the phone calls API](#managing-phone-calls) that we needed to specify the `remote_request_params` when creating the phone call? The same applies for the batch operation.
+
+Let's try again, this time specifying the `remote_request_params`. Note that for batch operations the `remote_request_params` are nested under `parameters`.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s -XPOST http://scfm:3000/api/batch_operations -d type=BatchOperation::PhoneCallCreate --data-urlencode "parameters[remote_request_params][from]=1234" --data-urlencode "parameters[remote_request_params][url]=https://demo.twilio.com/docs/voice.xml" -d "parameters[remote_request_params][method]=GET" | jq'
+```
+
+```
+< HTTP/1.1 201 Created
+```
+
+```json
+{
+  "id": 3,
+  "callout_id": null,
+  "parameters": {
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    }
+  },
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-23T04:26:06.717Z",
+  "updated_at": "2017-11-23T04:26:06.717Z"
+}
+```
+
+Alright that seemed to have worked. Note from the response above that the `status` is `preview`. This is similar to when we created a [batch operation for populating a callout](#populating-a-callout).
+
+### Previewing
+
+Now that we have our batch operation we can go ahead and preview it to see which [callout participations](#managing-callout-participations) will have phone calls created.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/3/preview/callout_participations | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 4
+```
+
+```json
+[
+  {
+    "id": 2,
+    "callout_id": 1,
+    "contact_id": 2,
+    "callout_population_id": null,
+    "msisdn": "+252662345679",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:37:57.777Z",
+    "updated_at": "2017-11-24T05:37:57.777Z"
+  },
+  {
+    "id": 3,
+    "callout_id": 1,
+    "contact_id": 1,
+    "callout_population_id": 1,
+    "msisdn": "+252662345678",
+    "call_flow_logic": null,
+    "metadata": {},
+    "created_at": "2017-11-24T05:38:41.562Z",
+    "updated_at": "2017-11-24T05:38:41.562Z"
+  },
+  {
+    "id": 4,
+    "callout_id": 2,
+    "contact_id": 1,
+    "callout_population_id": 2,
+    "msisdn": "+252662345678",
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.534Z",
+    "updated_at": "2017-11-24T05:47:50.534Z"
+  },
+  {
+    "id": 5,
+    "callout_id": 2,
+    "contact_id": 2,
+    "callout_population_id": 2,
+    "msisdn": "+252662345679",
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.545Z",
+    "updated_at": "2017-11-24T05:47:50.545Z"
+  }
+]
+```
+
+Here we see a total of `4` callout participations across both of our callouts. This means that if we were to go ahead and execute the batch operation right now, phone calls would be created for all of these participations.
+
+For this example we only wanted to create phone calls from the second callout, or the one which we started.
+
+### Updating with filter parameters
+
+Let's go ahead and specify some `callout_filter_params` so that our batch operation will only create phone calls for the callouts that are `running`. To do this let's go ahead and update the batch operation, this time specifying `callout_filter_params`. Note that we also need to specify the `remote_request_params` when updating the batch operation.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -XPATCH http://scfm:3000/api/batch_operations/3 --data-urlencode "parameters[remote_request_params][from]=1234" --data-urlencode "parameters[remote_request_params][url]=https://demo.twilio.com/docs/voice.xml" -d "parameters[remote_request_params][method]=GET" -d "parameters[callout_filter_params][status]=running"'
+```
+
+```
+< HTTP/1.1 204 No Content
+```
+
+### Fetching
+
+Let's fetch the batch operation to make sure that our filter parameters were specified correctly:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/3 | jq'
+```
+
+```json
+{
+  "id": 3,
+  "callout_id": null,
+  "parameters": {
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "callout_filter_params": {
+      "status": "running"
+    }
+  },
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-23T04:26:06.717Z",
+  "updated_at": "2017-11-23T04:40:32.154Z"
+}
+```
+
+### Previewing
+
+Let's preview our batch operation again to see which callout participations will have phone calls created.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/3/preview/callout_participations | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 4,
+    "callout_id": 2,
+    "contact_id": 1,
+    "callout_population_id": 2,
+    "msisdn": "+252662345678",
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.534Z",
+    "updated_at": "2017-11-24T05:47:50.534Z"
+  },
+  {
+    "id": 5,
+    "callout_id": 2,
+    "contact_id": 2,
+    "callout_population_id": 2,
+    "msisdn": "+252662345679",
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "metadata": {},
+    "created_at": "2017-11-24T05:47:50.545Z",
+    "updated_at": "2017-11-24T05:47:50.545Z"
+  }
+]
+```
+
+Now we can see that the preview only shows the two callout participations from the second callout.
+
+### Queuing
+
+Now that we're happy with out batch operation let's go ahead and queue it.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/3/batch_operation_events -d event=queue | jq'
+```
+
+```json
+{
+  "id": 3,
+  "callout_id": null,
+  "parameters": {
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "callout_filter_params": {
+      "status": "running"
+    }
+  },
+  "metadata": {},
+  "status": "queued",
+  "created_at": "2017-11-23T04:26:06.717Z",
+  "updated_at": "2017-11-23T04:45:54.390Z"
+}
+```
+
+We can see theat the `status` is `queued`. Let's fetch it again to see if it's finished.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/3 | jq'
+```
+
+```json
+{
+  "id": 3,
+  "callout_id": null,
+  "parameters": {
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "callout_filter_params": {
+      "status": "running"
+    }
+  },
+  "metadata": {},
+  "status": "finished",
+  "created_at": "2017-11-23T04:26:06.717Z",
+  "updated_at": "2017-11-23T04:45:54.483Z"
+}
+```
+
+Now we can see that the `status` is `finished`, we can check to see the phone calls which have been created.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/3/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345678",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T05:51:36.704Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345679",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T05:51:36.719Z"
+  }
+]
+```
+
+So we can see that two phone calls were created from this batch operation. One for Alice and one for Bob. Using the [Phone Calls API](#managing-phone-calls) we manage the phone calls created by this batch operation if we need to.
+
+## Phone Call Batch Operations (Queue)
+
+In the previous section we explained how to use a batch operation to create phone calls. The next logical step would be to create a batch operation to queue the calls on Twilio or Somleng. Let's go ahead and do this now:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/batch_operations -d type=BatchOperation::PhoneCallQueue | jq'
+```
+
+```json
+{
+  "id": 4,
+  "callout_id": null,
+  "parameters": {},
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-24T04:01:42.633Z",
+  "updated_at": "2017-11-24T04:01:42.633Z"
+}
+```
+
+### Previewing
+
+We can see the `status` is `preview` so let's go ahead and preview the *phone calls* which would be queued by this batch operation.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/4/preview/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 5
+```
+
+```json
+[
+  {
+    "id": 1,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "a887211a-b77f-4f3c-9b33-068ebbb5f54b",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "345",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:40:57.000+00:00",
+      "date_updated": "2017-11-24T05:40:57.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "a887211a-b77f-4f3c-9b33-068ebbb5f54b",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/a887211a-b77f-4f3c-9b33-068ebbb5f54b"
+    },
+    "call_flow_logic": null,
+    "remotely_queued_at": "2017-11-24T05:40:57.657Z",
+    "created_at": "2017-11-24T05:39:20.522Z",
+    "updated_at": "2017-11-24T05:40:57.657Z"
+  },
+  {
+    "id": 3,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "canceled",
+    "msisdn": "+252662345678",
+    "remote_call_id": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+    "remote_status": "canceled",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:43:19.000+00:00",
+      "date_updated": "2017-11-24T05:43:19.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+      "status": "canceled",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
+    },
+    "remote_request_params": {
+      "from": "345",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:43:19.000+00:00",
+      "date_updated": "2017-11-24T05:43:19.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
+    },
+    "call_flow_logic": null,
+    "remotely_queued_at": "2017-11-24T05:43:20.446Z",
+    "created_at": "2017-11-24T05:41:38.394Z",
+    "updated_at": "2017-11-24T05:44:06.099Z"
+  },
+  {
+    "id": 4,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "8ddfdac8-f200-4d07-be56-1444d9edfd7e",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "345",
+      "url": "http://18a2c6b3.ngrok.io/api/remote_phone_call_events"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:46:42.000+00:00",
+      "date_updated": "2017-11-24T05:46:42.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "8ddfdac8-f200-4d07-be56-1444d9edfd7e",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/8ddfdac8-f200-4d07-be56-1444d9edfd7e"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T05:46:43.246Z",
+    "created_at": "2017-11-24T05:45:22.310Z",
+    "updated_at": "2017-11-24T05:46:43.246Z"
+  },
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345678",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T05:51:36.704Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345679",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T05:51:36.719Z"
+  }
+]
+```
+
+That's a lot of calls. In fact that's all the calls that we have created so far. For this example we only want to queue the calls from the `running` callout. Additionally we only want to queue calls that have the `status` `created` since `created` is the only state that can transition to `queued`.
+
+### Updating with filter parameters
+
+When queuing phone calls, we can filter on any of the attributes in the phone calls tables, in the callout participations table and in the callouts table. Let's update our batch operation with some filter parameters.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -XPATCH http://scfm:3000/api/batch_operations/4 -d "parameters[callout_filter_params][status]=running" -d "parameters[phone_call_filter_params][status]=created"'
+```
+
+```
+< HTTP/1.1 204 No Content
+```
+
+### Fetching
+
+To see the result let's fetch the batch operation:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/4 | jq'
+```
+
+```json
+{
+  "id": 4,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "created"
+    }
+  },
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-24T05:57:01.035Z",
+  "updated_at": "2017-11-24T06:42:54.029Z"
+}
+```
+
+### Previewing
+
+And preview it again:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/4/preview/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345678",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T05:51:36.704Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "created",
+    "msisdn": "+252662345679",
+    "remote_call_id": null,
+    "remote_status": null,
+    "remote_direction": null,
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {},
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": null,
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T05:51:36.719Z"
+  }
+]
+```
+
+### Queuing
+
+Now that we're happy with our batch operation let's go ahead and queue it.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/4/batch_operation_events -d event=queue | jq'
+```
+
+```json
+{
+  "id": 4,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "created"
+    }
+  },
+  "metadata": {},
+  "status": "queued",
+  "created_at": "2017-11-24T05:57:01.035Z",
+  "updated_at": "2017-11-24T06:47:08.115Z"
+}
+```
+
+We can see theat the status is queued. Let's fetch it again to see if it's finished.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/4 | jq'
+```
+
+```json
+{
+  "id": 4,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "created"
+    }
+  },
+  "metadata": {},
+  "status": "finished",
+  "created_at": "2017-11-24T05:57:01.035Z",
+  "updated_at": "2017-11-24T06:47:08.115Z"
+}
+```
+
+Now we can see that the `status` is `finished`, we can check to see the phone calls which have been queued.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/4/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/392be5ab-ad3e-4746-8076-de3995bda6a3"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.246Z",
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T06:47:09.246Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345679",
+    "remote_call_id": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345679",
+      "to_formatted": "+252 66 234 5679",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/b2d6480a-27ea-4c90-a39e-ea4adeae5209"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.214Z",
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T06:47:09.214Z"
+  }
+]
+```
+
+Both of our phone calls now have the `status` `remotely_queued`.
+
+## Phone Call Batch Operations (Queue Remote Status Fetch)
+
+The last batch operation that we might want to do is to queue phone calls for a remote status fetch. To do this let's create a batch operation for fetching the remote status
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -XPOST http://scfm:3000/api/batch_operations -d type=BatchOperation::PhoneCallQueueRemoteFetch | jq'
+```
+
+```json
+{
+  "id": 5,
+  "callout_id": null,
+  "parameters": {},
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-24T07:30:29.220Z",
+  "updated_at": "2017-11-24T07:30:29.220Z"
+}
+```
+
+Once again, let's preview the batch operation to see which phone calls would be updated.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s -v http://scfm:3000/api/batch_operations/5/preview/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 5
+```
+
+```json
+[
+  {
+    "id": 1,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "a887211a-b77f-4f3c-9b33-068ebbb5f54b",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "345",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:40:57.000+00:00",
+      "date_updated": "2017-11-24T05:40:57.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "a887211a-b77f-4f3c-9b33-068ebbb5f54b",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/a887211a-b77f-4f3c-9b33-068ebbb5f54b"
+    },
+    "call_flow_logic": null,
+    "remotely_queued_at": "2017-11-24T05:40:57.657Z",
+    "created_at": "2017-11-24T05:39:20.522Z",
+    "updated_at": "2017-11-24T05:40:57.657Z"
+  },
+  {
+    "id": 3,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "canceled",
+    "msisdn": "+252662345678",
+    "remote_call_id": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+    "remote_status": "canceled",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:43:19.000+00:00",
+      "date_updated": "2017-11-24T05:43:19.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+      "status": "canceled",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
+    },
+    "remote_request_params": {
+      "from": "345",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:43:19.000+00:00",
+      "date_updated": "2017-11-24T05:43:19.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "082305b2-a0e4-4921-89bf-7bb544fd6910",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/082305b2-a0e4-4921-89bf-7bb544fd6910"
+    },
+    "call_flow_logic": null,
+    "remotely_queued_at": "2017-11-24T05:43:20.446Z",
+    "created_at": "2017-11-24T05:41:38.394Z",
+    "updated_at": "2017-11-24T05:44:06.099Z"
+  },
+  {
+    "id": 4,
+    "callout_participation_id": 3,
+    "contact_id": 1,
+    "create_batch_operation_id": null,
+    "queue_batch_operation_id": null,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "8ddfdac8-f200-4d07-be56-1444d9edfd7e",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "345",
+      "url": "http://18a2c6b3.ngrok.io/api/remote_phone_call_events"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T05:46:42.000+00:00",
+      "date_updated": "2017-11-24T05:46:42.000+00:00",
+      "direction": "outbound-api",
+      "from": "345",
+      "from_formatted": "+34 5 ",
+      "price": 0,
+      "sid": "8ddfdac8-f200-4d07-be56-1444d9edfd7e",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/8ddfdac8-f200-4d07-be56-1444d9edfd7e"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T05:46:43.246Z",
+    "created_at": "2017-11-24T05:45:22.310Z",
+    "updated_at": "2017-11-24T05:46:43.246Z"
+  },
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/392be5ab-ad3e-4746-8076-de3995bda6a3"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.246Z",
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T06:47:09.246Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345679",
+    "remote_call_id": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345679",
+      "to_formatted": "+252 66 234 5679",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/b2d6480a-27ea-4c90-a39e-ea4adeae5209"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.214Z",
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T06:47:09.214Z"
+  }
+]
+```
+
+Once again this displays all the phone calls because we haven't yet specified any filter parameters.
+
+### Updating with filter parameters
+
+When updating the remote status, we're only interested in the calls that have the `status` `remotely_queued` OR `in_progress`. Let's update our batch operation to filter on those statuses. For this example we'll also filter on the callout which is `running`.
+
+Note that in the command below we specify the statuses as a comma separated list:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -XPATCH http://scfm:3000/api/batch_operations/5 -d "parameters[callout_filter_params][status]=running" -d "parameters[phone_call_filter_params][status]=remotely_queued,in_progress"'
+```
+
+```
+< HTTP/1.1 204 No Content
+```
+
+### Fetching
+
+To see the result let's fetch the batch operation:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/5 | jq'
+```
+
+```json
+{
+  "id": 5,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "remotely_queued,in_progress"
+    }
+  },
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-24T07:30:29.220Z",
+  "updated_at": "2017-11-24T08:52:52.602Z"
+}
+```
+
+### Previewing
+
+And preview it again:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/5/preview/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 2
+```
+
+```json
+[
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345678",
+    "remote_call_id": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/392be5ab-ad3e-4746-8076-de3995bda6a3"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.246Z",
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T06:47:09.246Z"
+  },
+  {
+    "id": 6,
+    "callout_participation_id": 5,
+    "contact_id": 2,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": null,
+    "status": "remotely_queued",
+    "msisdn": "+252662345679",
+    "remote_call_id": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+    "remote_status": "queued",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {},
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "b2d6480a-27ea-4c90-a39e-ea4adeae5209",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345679",
+      "to_formatted": "+252 66 234 5679",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/b2d6480a-27ea-4c90-a39e-ea4adeae5209"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.214Z",
+    "created_at": "2017-11-24T05:51:36.719Z",
+    "updated_at": "2017-11-24T06:47:09.214Z"
+  }
+]
+```
+
+We can see that this filter now returns only our phone calls which have the `status` `remotely_queued` and that are from our running callout.
+
+### Limiting
+
+We can further limit the number of calls which will be updated by specifying a limit. Let's do this by updating our batch operation parameters again and setting the `limit` to `1`. Note that we also need to specify our filter parameters otherwise they'll be overridden.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -XPATCH http://scfm:3000/api/batch_operations/5 -d "parameters[callout_filter_params][status]=running" -d "parameters[phone_call_filter_params][status]=remotely_queued,in_progress" -d "parameters[limit]=1"'
+```
+
+```
+< HTTP/1.1 204 No Content
+```
+
+Let's fetch it again to make sure it was updated
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/5 | jq'
+```
+
+```json
+{
+  "id": 5,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "remotely_queued,in_progress"
+    },
+    "limit": "1"
+  },
+  "metadata": {},
+  "status": "preview",
+  "created_at": "2017-11-24T07:30:29.220Z",
+  "updated_at": "2017-11-24T08:59:49.310Z"
+}
+```
+
+We can see that the `limit` parameter has been set correctly.
+
+### Queueing
+
+Let's go ahead and queue our batch operation.
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/5/batch_operation_events -d event=queue | jq'
+```
+
+```json
+{
+  "id": 5,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "remotely_queued,in_progress"
+    },
+    "limit": "1"
+  },
+  "metadata": {},
+  "status": "queued",
+  "created_at": "2017-11-24T07:30:29.220Z",
+  "updated_at": "2017-11-24T08:59:49.310Z"
+}
+```
+
+And fetch it to check if it's finished:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -s http://scfm:3000/api/batch_operations/5 | jq'
+```
+
+```json
+{
+  "id": 5,
+  "callout_id": null,
+  "parameters": {
+    "callout_filter_params": {
+      "status": "running"
+    },
+    "phone_call_filter_params": {
+      "status": "remotely_queued,in_progress"
+    },
+    "limit": "1"
+  },
+  "metadata": {},
+  "status": "finished",
+  "created_at": "2017-11-24T07:30:29.220Z",
+  "updated_at": "2017-11-24T08:59:49.310Z"
+}
+```
+
+Finally check the phone calls were updated:
+
+```
+$ docker run -t --rm --link somleng-scfm endeveit/docker-jq /bin/sh -c 'curl -v -s http://scfm:3000/api/batch_operations/5/phone_calls | jq'
+```
+
+```
+< Per-Page: 25
+< Total: 1
+```
+
+```json
+[
+  {
+    "id": 5,
+    "callout_participation_id": 4,
+    "contact_id": 1,
+    "create_batch_operation_id": 3,
+    "queue_batch_operation_id": 4,
+    "queue_remote_fetch_batch_operation_id": 5,
+    "status": "canceled",
+    "msisdn": "+252662345678",
+    "remote_call_id": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+    "remote_status": "canceled",
+    "remote_direction": "outbound-api",
+    "remote_error_message": null,
+    "metadata": {},
+    "remote_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:09.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+      "status": "canceled",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/392be5ab-ad3e-4746-8076-de3995bda6a3"
+    },
+    "remote_request_params": {
+      "from": "1234",
+      "url": "https://demo.twilio.com/docs/voice.xml",
+      "method": "GET"
+    },
+    "remote_queue_response": {
+      "account_sid": "0213d485-12cb-4d0d-9cb1-966546240a57",
+      "api_version": "2010-04-01",
+      "date_created": "2017-11-24T06:47:08.000+00:00",
+      "date_updated": "2017-11-24T06:47:08.000+00:00",
+      "direction": "outbound-api",
+      "from": "1234",
+      "from_formatted": "+1 (234) ",
+      "price": 0,
+      "sid": "392be5ab-ad3e-4746-8076-de3995bda6a3",
+      "status": "queued",
+      "subresource_uris": {},
+      "to": "+252662345678",
+      "to_formatted": "+252 66 234 5678",
+      "uri": "/api/2010-04-01/Accounts/0213d485-12cb-4d0d-9cb1-966546240a57/Calls/392be5ab-ad3e-4746-8076-de3995bda6a3"
+    },
+    "call_flow_logic": "CallFlowLogic::OutcomeMonitoring",
+    "remotely_queued_at": "2017-11-24T06:47:09.246Z",
+    "created_at": "2017-11-24T05:51:36.704Z",
+    "updated_at": "2017-11-24T09:12:07.749Z"
+  }
+]
+```
+
+As we can see the phone call has been updated with the remote status but only 1 phone call was returned. This is because we specified a limit of `1`.

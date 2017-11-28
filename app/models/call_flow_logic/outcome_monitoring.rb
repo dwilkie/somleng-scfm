@@ -14,6 +14,18 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
     state :recording_transfer_not_received_reason
     state :playing_transfer_not_received_exit_message
     state :finished
+    state :gathering_paid_for_transport
+    state :gathering_paid_for_transport_amount
+    state :gathering_safe_at_venue
+    state :gathering_fee_paid
+    state :gathering_fee_paid_amount
+    state :recording_goods_purchased
+    state :gathering_item_availability
+    state :gathering_idp_status
+    state :gathering_water_availability
+    state :gathering_sickness
+    state :gathering_preferred_transfer_modality
+    state :playing_completed_survey_message
 
     before_all_events :set_current_state
     after_all_events :set_status
@@ -28,10 +40,6 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
                   :to =>   :gathering_received_transfer
 
       transitions :from => :gathering_received_transfer,
-                  :to => :gathering_received_transfer_amount,
-                  :if => :answered_yes?
-
-      transitions :from => :gathering_received_transfer,
                   :to => :recording_transfer_not_received_reason,
                   :if => :answered_no?
 
@@ -40,10 +48,73 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
 
       transitions :from => :playing_transfer_not_received_exit_message,
                   :to => :finished
+
+      transitions :from => :gathering_received_transfer,
+                  :to => :gathering_received_transfer_amount,
+                  :if => :answered_yes?
+
+      transitions :from => :gathering_received_transfer_amount,
+                  :to => :gathering_paid_for_transport,
+                  :if => :answered_any?
+
+      transitions :from => :gathering_paid_for_transport,
+                  :to => :gathering_paid_for_transport_amount,
+                  :if => :answered_yes?
+
+      transitions :from => :gathering_paid_for_transport,
+                  :to => :gathering_safe_at_venue,
+                  :if => :answered_no?
+
+      transitions :from => :gathering_paid_for_transport_amount,
+                  :to => :gathering_safe_at_venue,
+                  :if => :answered_any?
+
+      transitions :from => :gathering_safe_at_venue,
+                  :to => :gathering_fee_paid,
+                  :if => :answered_yes_or_no?
+
+      transitions :from => :gathering_fee_paid,
+                  :to => :gathering_fee_paid_amount,
+                  :if => :answered_yes?
+
+      transitions :from => :gathering_fee_paid,
+                  :to => :recording_goods_purchased,
+                  :if => :answered_no?
+
+      transitions :from => :gathering_fee_paid_amount,
+                  :to => :recording_goods_purchased,
+                  :if => :answered_any?
+
+      transitions :from => :recording_goods_purchased,
+                  :to => :gathering_item_availability
+
+      transitions :from => :gathering_item_availability,
+                  :to => :gathering_idp_status,
+                  :if => :answered_yes_or_no?
+
+      transitions :from => :gathering_idp_status,
+                  :to => :gathering_water_availability,
+                  :if => :answered_yes_or_no?
+
+      transitions :from => :gathering_water_availability,
+                  :to => :gathering_sickness,
+                  :if => :answered_any?
+
+      transitions :from => :gathering_sickness,
+                  :to => :gathering_preferred_transfer_modality,
+                  :if => :answered_yes_or_no?
+
+      transitions :from => :gathering_preferred_transfer_modality,
+                  :to => :playing_completed_survey_message,
+                  :if => :answered_yes_or_no?
+
+      transitions :from => :playing_completed_survey_message,
+                  :to => :finished
     end
   end
 
   def run!
+    super
     if step!
       before_save_contact
       contact.save
@@ -98,6 +169,14 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
     digits == "2"
   end
 
+  def answered_yes_or_no?
+    answered_yes? || answered_no?
+  end
+
+  def answered_any?
+    digits.present?
+  end
+
   def contact
     event.contact
   end
@@ -111,16 +190,62 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
   end
 
   def twiml_for_gathering_received_transfer
-    gather(:num_digits => 1) do |gather|
-      play_response(gather, play_url_for(:did_not_understand_response)) if status_did_not_change?
-    end
+    gather(:num_digits => 1)
   end
 
   def twiml_for_gathering_received_transfer_amount
     gather(:num_digits => 3)
   end
 
+  def twiml_for_gathering_paid_for_transport
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_paid_for_transport_amount
+    gather(:num_digits => 3)
+  end
+
+  def twiml_for_gathering_safe_at_venue
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_fee_paid
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_fee_paid_amount
+    gather(:num_digits => 3)
+  end
+
+  def twiml_for_gathering_item_availability
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_idp_status
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_water_availability
+    gather(:num_digits => 3)
+  end
+
+  def twiml_for_gathering_sickness
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_gathering_preferred_transfer_modality
+    gather(:num_digits => 1)
+  end
+
+  def twiml_for_recording_goods_purchased
+    play_and_record
+  end
+
   def twiml_for_recording_transfer_not_received_reason
+    play_and_record
+  end
+
+  def play_and_record
     voice_response do |response|
       play_response_from_status(response)
       response.record
@@ -128,7 +253,11 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
   end
 
   def twiml_for_playing_transfer_not_received_exit_message
-    play_and_redirect
+    play_and_hangup
+  end
+
+  def twiml_for_playing_completed_survey_message
+    play_and_hangup
   end
 
   def twiml_for_finished
@@ -141,9 +270,20 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
   def gather(options = {}, &block)
     voice_response do |response|
       response.gather(default_gather_options.merge(options)) do |gather|
-        yield(gather) if block_given?
+        if block_given?
+          yield(gather)
+        else
+          play_response(gather, play_url_for(:did_not_understand_response)) if status_did_not_change?
+        end
         play_response_from_status(gather)
       end
+    end
+  end
+
+  def play_and_hangup
+    voice_response do |response|
+      play_response_from_status(response)
+      response.hangup
     end
   end
 
