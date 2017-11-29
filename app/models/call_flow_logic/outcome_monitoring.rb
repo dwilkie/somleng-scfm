@@ -1,6 +1,6 @@
 class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
   DEFAULT_PLAY_FILE_EXTENSION = ".wav"
-  DEFAULT_PLAY_FILE_BASE_URL = "http://example.com/voice"
+  DEFAULT_PLAY_FILE_BASE_URL = "https://s3-ap-southeast-1.amazonaws.com/scfm.unicef.io/call_flow_logic/outcome_monitoring"
 
   attr_accessor :previous_status
 
@@ -262,7 +262,6 @@ class CallFlowLogic::OutcomeMonitoring < CallFlowLogic::Base
 
   def twiml_for_finished
     voice_response do |response|
-      play_response(response, play_url_for(:survey_is_already_finished))
       response.hangup
     end
   end
