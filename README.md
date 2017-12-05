@@ -1,8 +1,8 @@
 # somleng-scfm-avf
 
-[![Build Status](https://travis-ci.org/dwilkie/somleng-scfm-avf.svg?branch=master)](https://travis-ci.org/dwilkie/somleng-scfm-avf)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/919a7e91bfbfa6e34c9c/test_coverage)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/919a7e91bfbfa6e34c9c/maintainability)](https://codeclimate.com/github/dwilkie/somleng-scfm-avf/maintainability)
+[![Build Status](https://travis-ci.org/somleng/somleng-scfm.svg?branch=master)](https://travis-ci.org/somleng/somleng-scfm)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6e5acaf5abd4edf17999/test_coverage)](https://codeclimate.com/github/somleng/somleng-scfm/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6e5acaf5abd4edf17999/maintainability)](https://codeclimate.com/github/somleng/somleng-scfm/maintainability)
 
 Somleng Simple Call Flow Manager (Somleng SCFM) manages both inbound and outbound calls through [Somleng](https://github.com/somleng/twilreapi) and/or [Twilio](https://www.twilio.com/). Use it to create dynamic, customized and powerful call flows.
 
